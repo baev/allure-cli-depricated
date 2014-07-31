@@ -99,8 +99,8 @@ public class AllureCli {
 
             debug("Generating report for Allure version = " + reportVersion + "...");
             List<File> inputDirectories = getInputDirectories(inputPathsOrGlobs);
-            AllureReportBuilder allureReportBuilder = new AllureReportBuilder(reportVersion);
-            allureReportBuilder.processTestsResults(outputDirectory, inputDirectories.toArray(new File[inputDirectories.size()]));
+            AllureReportBuilder allureReportBuilder = new AllureReportBuilder(reportVersion, outputDirectory);
+            allureReportBuilder.processResults(inputDirectories.toArray(new File[inputDirectories.size()]));
 
 //            //FIXME: Uncomment this when https://github.com/allure-framework/allure-report-builder/issues/1 is resolved
 //            if (generator.getTestRunGenerator().getListFiles().getFiles().isEmpty()){
@@ -108,7 +108,7 @@ public class AllureCli {
 //                return;
 //            }
 
-            allureReportBuilder.unpackReportFace(outputDirectory);
+            allureReportBuilder.unpackFace();
 
             info(String.format(
                     "Successfully generated report to %s.",
