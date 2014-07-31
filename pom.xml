@@ -1,6 +1,69 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <organization>
+        <name>Yandex</name>
+        <url>http://company.yandex.com</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/allure-framework/allure-cli</url>
+        <connection>scm:git@github.com:allure-framework/allure-cli.git</connection>
+        <developerConnection>scm:git:git@github.com:allure-framework/allure-cli.git</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/allure-framework/allure-cli/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>TeamCity</system>
+        <url>http://teamcity.qatools.ru/</url>
+    </ciManagement>
+
+    <developers>
+        <developer>
+            <id>eroshenkoam</id>
+            <name>Artem Eroshenko</name>
+            <email>eroshenkoam@yandex-team.ru</email>
+            <organization>Yandex</organization>
+        </developer>
+        <developer>
+            <id>charlie</id>
+            <name>Dmitry Baev</name>
+            <email>charlie@yandex-team.ru</email>
+            <organization>Yandex</organization>
+        </developer>
+        <developer>
+            <id>vania-pooh</id>
+            <name>Ivan Krutov</name>
+            <email>vania-pooh@yandex-team.ru</email>
+            <organization>Yandex</organization>
+        </developer>
+    </developers>
+
+    <mailingLists>
+        <mailingList>
+            <name>Allure Mailing List</name>
+            <post>allure@yandex-team.ru</post>
+        </mailingList>
+    </mailingLists>
+    
     <groupId>ru.yandex.qatools.allure</groupId>
     <artifactId>allure-cli</artifactId>
     <version>2.0-SNAPSHOT</version>
