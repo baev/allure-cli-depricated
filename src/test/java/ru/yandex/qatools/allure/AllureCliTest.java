@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class AllureCliTest extends AllureCli {
+public class AllureCLITest extends AllureCLI {
 
     @Test
     public void getInputDirectories() throws IOException {

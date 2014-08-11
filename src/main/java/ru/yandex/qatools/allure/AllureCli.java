@@ -25,14 +25,14 @@ import java.util.jar.Manifest;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 23.05.14
  */
-@Command(name = "allure", description = "Allure report generation utility")
-public class AllureCli {
+@Command(name = "allure", description = "Allure command line utility")
+public class AllureCLI {
 
     private static final String DEFAULT_OUTPUT_PATH = "output";
 
     private static final String DEFAULT_REPORT_VERSION = "1.3.9";
 
-    private static final Logger logger = LoggerFactory.getLogger(AllureCli.class);
+    private static final Logger logger = LoggerFactory.getLogger(AllureCLI.class);
 
     @Inject
     public HelpOption helpOption;
@@ -57,9 +57,9 @@ public class AllureCli {
     public boolean verbose;
 
     public static void main(String[] args) {
-        AllureCli allure;
+        AllureCLI allure;
         try {
-            allure = SingleCommand.singleCommand(AllureCli.class).parse(args);
+            allure = SingleCommand.singleCommand(AllureCLI.class).parse(args);
         } catch (ParseException e) {
             error(e.getMessage());
             System.exit(1);
