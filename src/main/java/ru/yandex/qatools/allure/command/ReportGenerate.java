@@ -5,6 +5,7 @@ import io.airlift.command.Command;
 import io.airlift.command.Option;
 import org.codehaus.plexus.util.DirectoryScanner;
 import ru.yandex.qatools.allure.report.AllureReportBuilder;
+import ru.yandex.qatools.allure.report.AllureReportBuilderException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,40 +16,27 @@ import java.util.List;
  * 11/08/14
  */
 @Command(name = "generate", description = "Generate allure report")
-public class ReportGenerate extends AllureCommand {
+public class ReportGenerate extends ReportCommand {
 
-    private static final String DEFAULT_OUTPUT_PATH = "output";
-
-    private static final String DEFAULT_REPORT_VERSION = "1.3.9";
-
-    @Arguments(title = "input directories or globs", required = true,
+    @Arguments(title = "Results patterns", required = true,
             description = "A list of input directories or globs to be processed")
     public List<String> resultsPatterns;
 
-    @Option(name = {"-o", "--report-path"}, required = false,
-            description = "Directory to output report files to (default is \"" + DEFAULT_OUTPUT_PATH + "\")")
-    public String reportPath = DEFAULT_OUTPUT_PATH;
-
     @Option(name = {"-v", "--report-version"}, required = false,
-            description = "Report version specification in Maven format (supports ranges)")
-    public String reportVersion = DEFAULT_REPORT_VERSION;
+            description = "Report version specification in Maven format")
+    public String reportVersion = getConfig().getReportVersion();
 
-    public void run() {
-        try {
-            File outputDirectory = new File(reportPath);
-            if (!outputDirectory.exists() && !outputDirectory.mkdirs()) {
-                throw new RuntimeException("Can't create output directory " + reportPath);
-            }
-
-            List<File> inputDirectories = getInputDirectories(resultsPatterns);
-            AllureReportBuilder allureReportBuilder = new AllureReportBuilder(reportVersion, outputDirectory);
-            allureReportBuilder.processResults(inputDirectories.toArray(new File[inputDirectories.size()]));
-
-            allureReportBuilder.unpackFace();
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    public void runUnsafe() throws AllureReportBuilderException {
+        File outputDirectory = new File(reportPath);
+        if (!outputDirectory.exists() && !outputDirectory.mkdirs()) {
+            throw new RuntimeException("Can't create output directory " + reportPath);
         }
+
+        List<File> inputDirectories = getInputDirectories(resultsPatterns);
+        AllureReportBuilder allureReportBuilder = new AllureReportBuilder(reportVersion, outputDirectory);
+        allureReportBuilder.processResults(inputDirectories.toArray(new File[inputDirectories.size()]));
+
+        allureReportBuilder.unpackFace();
     }
 
     private File getCurrentWorkingDirectory() {

@@ -1,9 +1,7 @@
 package ru.yandex.qatools.allure;
 
 import io.airlift.command.*;
-import ru.yandex.qatools.allure.command.ReportDemo;
-import ru.yandex.qatools.allure.command.ReportGenerate;
-import ru.yandex.qatools.allure.command.Version;
+import ru.yandex.qatools.allure.command.*;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -16,9 +14,17 @@ public class AllureCLI {
                 .withDescription("Allure command line utility")
                 .withDefaultCommand(Help.class)
                 .withCommand(Help.class)
-                .withCommand(Version.class)
-                .withCommand(ReportDemo.class)
+                .withCommand(Demo.class)
+                .withCommand(Version.class);
+
+        builder.withGroup("report")
+                .withDescription("Report commands")
+                .withDefaultCommand(ReportInfo.class)
+                .withCommand(ReportInfo.class)
+                .withCommand(ReportOpen.class)
+                .withCommand(ReportClean.class)
                 .withCommand(ReportGenerate.class);
+
 
         Cli<Runnable> allureParser = builder.build();
 

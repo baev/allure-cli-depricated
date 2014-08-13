@@ -15,18 +15,14 @@ import java.util.jar.Manifest;
 public class Version extends AllureCommand {
 
     @Override
-    public void run() {
-        try {
-            URL url = ((URLClassLoader) getClass().getClassLoader()).findResource("META-INF/MANIFEST.MF");
-            Manifest manifest = new Manifest(url.openStream());
-            String specificationVersion = manifest.getMainAttributes().getValue("Specification-Version");
-            if (specificationVersion != null) {
-                System.out.println(specificationVersion);
-            } else {
-                System.out.println("Failed to load version from MANIFEST.MF. This is probably a bug.");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void runUnsafe() throws IOException {
+        URL url = ((URLClassLoader) getClass().getClassLoader()).findResource("META-INF/MANIFEST.MF");
+        Manifest manifest = new Manifest(url.openStream());
+        String specificationVersion = manifest.getMainAttributes().getValue("Specification-Version");
+        if (specificationVersion != null) {
+            System.out.println(specificationVersion);
+        } else {
+            System.out.println("Failed to load version from MANIFEST.MF. This is probably a bug.");
         }
     }
 }
