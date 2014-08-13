@@ -7,7 +7,7 @@ import ru.yandex.qatools.allure.command.*;
  * @author Dmitry Baev charlie@yandex-team.ru
  *         Date: 23.05.14
  */
-public class AllureClient {
+public class AllureCLI {
 
     public static void main(String[] args) {
         Cli.CliBuilder<Runnable> builder = Cli.<Runnable>builder("allure")
