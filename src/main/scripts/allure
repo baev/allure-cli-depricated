@@ -1,3 +1,16 @@
 #!/bin/bash
-ALLURE_HOME=${ALLURE_HOME:-"."}
-java -jar $ALLURE_HOME/allure-cli.jar $@
+
+if [ -z "$ALLURE_HOME" ]; then
+
+    SOURCE="${BASH_SOURCE[0]}"
+    while [ -h "$SOURCE" ]; do
+        DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+        SOURCE="$(readlink "$SOURCE")"
+        [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+    done
+    DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+fi
+
+ALLURE_HOME=$DIR/..
+java -jar $ALLURE_HOME/lib/allure.jar $@
