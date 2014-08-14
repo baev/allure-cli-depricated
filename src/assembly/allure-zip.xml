@@ -7,19 +7,19 @@
     <formats>
         <format>zip</format>
     </formats>
+    <fileSets>
+        <fileSet>
+            <directory>src/main/scripts</directory>
+            <fileMode>0755</fileMode>
+            <outputDirectory>/bin</outputDirectory>
+        </fileSet>
+    </fileSets>
     <files>
         <file>
             <source>target/allure-standalone.jar</source>
-            <destName>allure-cli.jar</destName>
-            <outputDirectory>/</outputDirectory>
-        </file>
-        <file>
-            <source>src/main/scripts/allure</source>
-            <outputDirectory>/</outputDirectory>
-        </file>
-        <file>
-            <source>src/main/scripts/allure.bat</source>
-            <outputDirectory>/</outputDirectory>
+            <destName>allure.jar</destName>
+            <outputDirectory>/lib</outputDirectory>
+            <fileMode>0755</fileMode>
         </file>
     </files>
 </assembly>
