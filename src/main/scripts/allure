@@ -9,8 +9,17 @@ if [ -z "$ALLURE_HOME" ]; then
         [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
     done
     DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+    ALLURE_HOME="$DIR/.."
 
 fi
 
-ALLURE_HOME=$DIR/..
-java -jar $ALLURE_HOME/lib/allure.jar $@
+ALLURE_JAR="$ALLURE_HOME/lib/allure.jar"
+
+if [ ! -f "$ALLURE_JAR" ]; then
+
+    echo "$ALLURE_HOME: is not a valid Allure home directory"
+    exit 1
+
+fi
+
+java -jar ${ALLURE_JAR} $@
