@@ -26,7 +26,7 @@ if not "%ALLURE_HOME%" == "" goto AllureHomeCurrentFolder
 
 :AllureHomeCurrentFolder
 SETLOCAL ENABLEEXTENSIONS
-SET ALLURE_HOME=%~dp0
+SET ALLURE_HOME=%~dp0..
 goto retryCheckAllureHome
 
 :retryCheckAllureHome
@@ -84,7 +84,7 @@ goto Win9xApp
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 SET JAVA_EXE="%JAVA_HOME%\bin\java.exe"
-SET ALLURE_CLI="%ALLURE_HOME%lib\allure.jar"
+SET ALLURE_JAR="%ALLURE_HOME%\lib\allure.jar"
 
 if ERRORLEVEL 1 goto error
 goto end
@@ -95,7 +95,4 @@ if "%OS%"=="WINNT" @endlocal
 set ERROR_CODE=1
 
 :end
-echo.
-echo %JAVA_EXE% -jar %ALLURE_CLI% %CMD_LINE_ARGS% >&2
-echo.
-%JAVA_EXE% -jar %ALLURE_CLI% %CMD_LINE_ARGS%
+%JAVA_EXE% -jar %ALLURE_JAR% %CMD_LINE_ARGS%
