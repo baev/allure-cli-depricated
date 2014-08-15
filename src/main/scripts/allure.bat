@@ -11,7 +11,7 @@ echo.
 goto error
 
 :OkJHome
-if exist "%JAVA_HOME%\bin\java.exe" goto checkAquaHome
+if exist "%JAVA_HOME%\bin\java.exe" goto checkAllureHome
 
 echo.
 echo Error: JAVA_HOME is set to an invalid directory. >&2
@@ -21,23 +21,23 @@ echo location of your Java installation. >&2
 echo.
 goto error
 
-:checkAquaHome
-if not "%ALLURE_HOME%" == "" goto AquaHomeCurrentFolder
+:checkAllureHome
+if not "%ALLURE_HOME%" == "" goto AllureHomeCurrentFolder
 
-:AquaHomeCurrentFolder
+:AllureHomeCurrentFolder
 SETLOCAL ENABLEEXTENSIONS
 SET ALLURE_HOME=%~dp0
-goto retryCheckAquaHome
+goto retryCheckAllureHome
 
-:retryCheckAquaHome
-if not "%ALLURE_HOME%" == "" goto OkAquaHome
+:retryCheckAllureHome
+if not "%ALLURE_HOME%" == "" goto OkAllureHome
 
 echo.
 echo Error: ALLURE_HOME not found in your environment. >&2
 echo.
 goto error
 
-:OkAquaHome
+:OkAllureHome
 if exist "%ALLURE_HOME%\lib\allure.jar" goto init
 
 echo.
