@@ -10,23 +10,27 @@ import ru.yandex.qatools.allure.command.*;
 public class AllureCLI {
 
     public static void main(String[] args) {
-        Cli.CliBuilder<Runnable> builder = Cli.<Runnable>builder("allure")
-                .withDescription("Allure command line tool")
-                .withDefaultCommand(Help.class)
-                .withCommand(Help.class)
-                .withCommand(Demo.class)
-                .withCommand(Version.class);
+        try {
+            Cli.CliBuilder<Runnable> builder = Cli.<Runnable>builder("allure")
+                    .withDescription("Allure command line tool")
+                    .withDefaultCommand(ReportGenerate.class)
+                    .withCommand(Help.class)
+                    .withCommand(Demo.class)
+                    .withCommand(Version.class);
 
-        builder.withGroup("report")
-                .withDescription("Report commands")
-                .withDefaultCommand(ReportOpen.class)
-                .withCommand(ReportOpen.class)
-                .withCommand(ReportClean.class)
-                .withCommand(ReportGenerate.class);
+            builder.withGroup("report")
+                    .withDescription("Report commands")
+                    .withDefaultCommand(ReportOpen.class)
+                    .withCommand(ReportOpen.class)
+                    .withCommand(ReportClean.class)
+                    .withCommand(ReportGenerate.class);
 
 
-        Cli<Runnable> allureParser = builder.build();
+            Cli<Runnable> allureParser = builder.build();
 
-        allureParser.parse(args).run();
+            allureParser.parse(args).run();
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
