@@ -11,7 +11,7 @@ import java.io.File;
  */
 public abstract class ReportCommand extends AllureCommand {
 
-    @Option(name = {"-o", "--report-path"}, type = OptionType.GROUP,
+    @Option(name = {"-o", "--report-path"}, type = OptionType.COMMAND,
             description = "Relative path to report directory")
     protected String reportPath = getConfig().getReportPath();
 
