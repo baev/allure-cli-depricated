@@ -38,13 +38,14 @@ echo.
 goto error
 
 :OkAllureHome
-if exist "%ALLURE_HOME%\lib\allure.jar" goto init
+SET ALLURE_CLI_JAR="%ALLURE_HOME%\lib\allure-cli.jar"
+if exist %ALLURE_CLI_JAR% goto init
 
 echo.
 echo Error: ALLURE_HOME is set to an invalid directory. >&2
 echo ALLURE_HOME = "%ALLURE_HOME%" >&2
 echo Please set the ALLURE_HOME variable in your environment to match the >&2
-echo location of your Aqua Client installation. >&2
+echo location of your Allure installation. >&2
 echo.
 goto error
 
@@ -84,7 +85,6 @@ goto Win9xApp
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 SET JAVA_EXE="%JAVA_HOME%\bin\java.exe"
-SET ALLURE_CLI_JAR="%ALLURE_HOME%\lib\allure-cli.jar"
 
 if ERRORLEVEL 1 goto error
 goto end
