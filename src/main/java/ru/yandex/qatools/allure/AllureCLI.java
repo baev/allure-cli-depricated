@@ -19,8 +19,7 @@ public class AllureCLI {
 
         builder.withGroup("report")
                 .withDescription("Report commands")
-                .withDefaultCommand(ReportInfo.class)
-                .withCommand(ReportInfo.class)
+                .withDefaultCommand(ReportOpen.class)
                 .withCommand(ReportOpen.class)
                 .withCommand(ReportClean.class)
                 .withCommand(ReportGenerate.class);
