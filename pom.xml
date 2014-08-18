@@ -94,13 +94,13 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>allure-standalone</id>
+                        <id>allure-cli-standalone</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
                         <configuration>
-                            <finalName>allure-standalone</finalName>
+                            <finalName>allure-cli-standalone</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                             <archive>
                                 <manifest>
@@ -115,15 +115,15 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>allure-zip</id>
+                        <id>allure-cli-zip</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
                         <configuration>
-                            <finalName>allure</finalName>
+                            <finalName>allure-cli</finalName>
                             <descriptors>
-                                <descriptor>src/assembly/allure-zip.xml</descriptor>
+                                <descriptor>src/assembly/allure-cli-zip.xml</descriptor>
                             </descriptors>
                             <outputDirectory>${project.parent.build.directory}</outputDirectory>
                             <appendAssemblyId>false</appendAssemblyId>

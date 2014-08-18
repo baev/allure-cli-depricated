@@ -15,7 +15,7 @@ import ru.yandex.qatools.allure.AllureConfig;
 public abstract class AllureCommand implements Runnable {
 
     @Option(name = {"--debug"}, type = OptionType.GLOBAL,
-            description = "Produce execution debug output")
+            description = "Output debug information")
     protected boolean debug = false;
 
     private static final AllureConfig config = new AllureConfig();

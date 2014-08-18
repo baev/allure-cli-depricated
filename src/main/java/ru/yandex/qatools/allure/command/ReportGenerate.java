@@ -15,7 +15,7 @@ import java.util.List;
  * eroshenkoam
  * 11/08/14
  */
-@Command(name = "generate", description = "Generate allure report")
+@Command(name = "generate", description = "Generate Allure report")
 public class ReportGenerate extends ReportCommand {
 
     @Arguments(title = "Results patterns", required = true,

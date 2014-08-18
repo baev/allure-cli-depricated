@@ -11,7 +11,7 @@ public class AllureCLI {
 
     public static void main(String[] args) {
         Cli.CliBuilder<Runnable> builder = Cli.<Runnable>builder("allure")
-                .withDescription("Allure command line utility")
+                .withDescription("Allure command line tool")
                 .withDefaultCommand(Help.class)
                 .withCommand(Help.class)
                 .withCommand(Demo.class)
