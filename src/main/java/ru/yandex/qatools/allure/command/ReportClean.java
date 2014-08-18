@@ -10,7 +10,7 @@ import java.io.IOException;
  * eroshenkoam
  * 13/08/14
  */
-@Command(name = "clean", description = "Clean report")
+@Command(name = "clean", description = "Clean report directory")
 public class ReportClean extends ReportCommand {
 
     public void runUnsafe() throws IOException {

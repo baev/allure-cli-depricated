@@ -20,9 +20,9 @@ public class Version extends AllureCommand {
         Manifest manifest = new Manifest(url.openStream());
         String specificationVersion = manifest.getMainAttributes().getValue("Specification-Version");
         if (specificationVersion != null) {
-            System.out.println(specificationVersion);
+            getLogger().info(specificationVersion);
         } else {
-            System.out.println("Failed to load version from MANIFEST.MF. This is probably a bug.");
+            getLogger().error("Failed to load version from MANIFEST.MF. This is probably a bug.");
         }
     }
 }

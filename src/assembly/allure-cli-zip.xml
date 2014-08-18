@@ -2,7 +2,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
 
-    <id>allure-zip</id>
+    <id>allure-cli-zip</id>
     <includeBaseDirectory>false</includeBaseDirectory>
     <formats>
         <format>zip</format>
@@ -16,10 +16,10 @@
     </fileSets>
     <files>
         <file>
-            <source>target/allure-standalone.jar</source>
-            <destName>allure.jar</destName>
+            <source>target/allure-cli-standalone.jar</source>
+            <destName>allure-cli.jar</destName>
             <outputDirectory>/lib</outputDirectory>
-            <fileMode>0755</fileMode>
+            <fileMode>0644</fileMode>
         </file>
     </files>
 </assembly>

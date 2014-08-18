@@ -9,11 +9,11 @@ import java.net.URI;
  */
 public class Browser {
 
-    public static void open(String url) throws Exception {
+    public static void open(URI url) throws Exception {
         if (Desktop.isDesktopSupported()) {
-            Desktop.getDesktop().browse(new URI(url));
+            Desktop.getDesktop().browse(url);
         } else {
-            System.out.println("Will not open browser because this capability is not supported on your platform.");
+            System.out.println("Can not open browser because this capability is not supported on your platform.");
         }
 
     }
