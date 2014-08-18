@@ -49,9 +49,9 @@ In order to change output directory type:
 ```bash
 $ allure relative/path/to/directory/with/xml/files -o=relative/path/to/output/directory
 ```
-When using command line tool version older than 2.0+ you should add **report generate** keywords:
+When using command line tool version older than 2.0+ you should add **generate** keyword:
 ```bash
-$ allure report generate relative/path/to/directory/with/xml/files
+$ allure generate relative/path/to/directory/with/xml/files
 ```
 ### Selecting Report Version
 Starting from CLI 2.0 you can specify version of the report to be used using **-v** flag:
