@@ -28,12 +28,18 @@ After installation you will have **allure** command available.
  * Unpack the archive to `allure-cli` directory
  * Navigate to `bin` directory
  * Use **allure.bat** for Windows and **allure** for other Unix platforms
+ 
+## Configuration
+
+Defaults: 
+ * **Report Path**: `allure-report` 
+ * **Report Version**: `1.3.9`
 
 ## Usage
 ### Generating report
 To generate report simply run the following command:
 ```bash
-$ allure path/to/directory/with/xml/files
+$ allure relative/path/to/directory/with/xml/files
 ```
 By default report is generated to directory named **allure-report**. When done simply open **index.html** page from the output directory or type:
 ```bash
@@ -41,17 +47,17 @@ $ allure report open
 ```
 In order to change output directory type:
 ```bash
-$ allure /path/to/directory/with/xml/files --outputPath=/path/to/output/directory
+$ allure relative/path/to/directory/with/xml/files -o=relative/path/to/output/directory
 ```
-When using command line tool version older than 2.0+ you should add **generate** keyword:
+When using command line tool version older than 2.0+ you should add **report generate** keywords:
 ```bash
-$ allure generate /path/to/directory/with/xml/files
+$ allure report generate relative/path/to/directory/with/xml/files
 ```
 ### Selecting Report Version
 Starting from CLI 2.0 you can specify version of the report to be used using **-v** flag:
 ```bash
-$ allure -v 1.3.9 /path/to/directory/with/xml/files
-$ allure -v 1.4.0 /path/to/directory/with/xml/files
+$ allure relative/path/to/directory/with/xml/files -v 1.3.6
+$ allure relative/path/to/directory/with/xml/files -v 1.4.0
 ```
 This allows you to use the same CLI with less or more outdated adapters. Default version is **1.3.9**. All required files are downloaded from Internet automatically (this fact is important if you try to use CLI in offline environment).
 ### Getting help
