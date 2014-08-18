@@ -84,7 +84,7 @@ goto Win9xApp
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 SET JAVA_EXE="%JAVA_HOME%\bin\java.exe"
-SET ALLURE_JAR="%ALLURE_HOME%\lib\allure.jar"
+SET ALLURE_CLI_JAR="%ALLURE_HOME%\lib\allure-cli.jar"
 
 if ERRORLEVEL 1 goto error
 goto end
@@ -95,4 +95,4 @@ if "%OS%"=="WINNT" @endlocal
 set ERROR_CODE=1
 
 :end
-%JAVA_EXE% -jar %ALLURE_JAR% %CMD_LINE_ARGS%
+%JAVA_EXE% -jar %ALLURE_CLI_JAR% %CMD_LINE_ARGS%
