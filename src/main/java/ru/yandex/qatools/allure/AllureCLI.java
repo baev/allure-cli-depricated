@@ -13,10 +13,11 @@ public class AllureCLI {
         try {
             Cli.CliBuilder<Runnable> builder = Cli.<Runnable>builder("allure")
                     .withDescription("Allure command line tool")
-                    .withDefaultCommand(ReportGenerate.class)
+                    .withDefaultCommand(Help.class)
                     .withCommand(Help.class)
                     .withCommand(Demo.class)
-                    .withCommand(Version.class);
+                    .withCommand(Version.class)
+                    .withCommand(ReportGenerate.class);
 
             builder.withGroup("report")
                     .withDescription("Report commands")
