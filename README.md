@@ -23,14 +23,42 @@ $ brew install allure-cli
 ```
 After installation you will have **allure** command available.
 
-#### Windows and others
- * [Download](https://github.com/allure-framework/allure-cli/releases/latests) latest version as ZIP archive
+#### Windows and other Unix
+ * [Download](https://github.com/allure-framework/allure-cli/releases/latest) latest version as ZIP archive
  * Unpack the archive to `allure-cli` directory
  * Navigate to `bin` directory
- * User either **allure** or **allure.bat**
+ * Use **allure.bat** for Windows and **allure** for other Unix platforms
 
 ## Usage
-Type `allure help` to view the all available commands
+### Generating report
+To generate report simply run the following command:
+```bash
+$ allure path/to/directory/with/xml/files
+```
+By default report is generated to directory named **output**. When done simply open **index.html** page from the output directory or type:
+```bash
+$ allure report open
+```
+In order to change output directory type:
+```bash
+$ allure /path/to/directory/with/xml/files --outputPath=/path/to/output/directory
+```
+When using command line tool version older than 2.0+ you should add **generate** keyword:
+```bash
+$ allure generate /path/to/directory/with/xml/files
+```
+### Selecting Report Version
+Starting from CLI 2.0 you can specify version of the report to be used using **-v** flag:
+```bash
+$ allure -v 1.3.9 /path/to/directory/with/xml/files
+$ allure -v 1.4.0 /path/to/directory/with/xml/files
+```
+This allows you to use the same CLI with less or more outdated adapters. All required files are downloaded from Internet automatically (this fact is important if you try to use CLI in offline environment).
+### Getting help
+To show help type:
+```bash
+$ allure help
+```
 
 ## Contact us
 Mailing list: [allure@yandex-team.ru](mailto:allure@yandex-team.ru)
