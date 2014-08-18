@@ -18,9 +18,13 @@ public class ReportOpen extends ReportCommand {
     @Override
     public void runUnsafe() throws Exception {
         File reportDirectory = getReportDirectory();
+        if (!reportDirectory.exists()) {
+            getLogger().error("Can't open report: respective directory doesn't exist");
+            return;
+        }
 
         URI uri = new File(reportDirectory, "index.html").toURI();
-        getLogger().info(String.format("Open report [%s] ", uri));
+        getLogger().info(String.format("Opening report [%s] ", uri));
         Browser.open(uri);
     }
 }
