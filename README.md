@@ -41,9 +41,17 @@ To generate report simply run the following command:
 ```bash
 $ allure generate path/to/directory/with/xml/files
 ```
+or 
+```bash
+$ allure report generate path/to/directory/with/xml/files
+```
 By default report is generated to directory named **allure-report**. When done simply open **index.html** page from the output directory or type:
 ```bash
 $ allure report open
+```
+To clean report direcotory use the following command: 
+```bash
+$ allure report clean
 ```
 In order to change output directory type:
 ```bash
