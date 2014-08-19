@@ -32,7 +32,7 @@ public class ReportGenerate extends ReportCommand {
         if (!outputDirectory.exists() && !outputDirectory.mkdirs()) {
             throw new RuntimeException("Can't create output directory " + reportPath);
         }
-
+        getLogger().debug(String.format("Generating report for Allure version [%s]", reportVersion));
         List<File> inputDirectories = getResultsDirectories(resultsPatterns);
         for (File file : inputDirectories) {
             getLogger().debug(String.format("Found results directory [%s]", file.getAbsolutePath()));
@@ -41,11 +41,13 @@ public class ReportGenerate extends ReportCommand {
         allureReportBuilder.processResults(inputDirectories.toArray(new File[inputDirectories.size()]));
 
         allureReportBuilder.unpackFace();
+        getLogger().info(String.format("Successfully generated report to [%s].", outputDirectory.getAbsolutePath()));
     }
 
     protected List<File> getResultsDirectories(List<String> resultPatterns) {
         List<File> resultDirectories = new ArrayList<>();
         for (String resultPattern : resultPatterns) {
+            getLogger().debug(String.format("Processing result pattern [%s]", resultPattern));
             resultDirectories.addAll(getResultsDirectoryByPattern(resultPattern));
         }
         return resultDirectories;
