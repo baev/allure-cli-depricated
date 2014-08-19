@@ -9,6 +9,7 @@ import ru.yandex.qatools.allure.report.AllureReportBuilderException;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,53 +33,51 @@ public class ReportGenerate extends ReportCommand {
             throw new RuntimeException("Can't create output directory " + reportPath);
         }
 
-        List<File> inputDirectories = getInputDirectories(resultsPatterns);
+        List<File> inputDirectories = getResultsDirectories(resultsPatterns);
+        for (File file : inputDirectories) {
+            getLogger().debug(String.format("Found results directory [%s]", file.getAbsolutePath()));
+        }
         AllureReportBuilder allureReportBuilder = new AllureReportBuilder(reportVersion, outputDirectory);
         allureReportBuilder.processResults(inputDirectories.toArray(new File[inputDirectories.size()]));
 
         allureReportBuilder.unpackFace();
     }
 
-    private File getCurrentWorkingDirectory() {
-        return new File(System.getProperty("user.dir"));
+    protected List<File> getResultsDirectories(List<String> resultPatterns) {
+        List<File> resultDirectories = new ArrayList<>();
+        for (String resultPattern : resultPatterns) {
+            resultDirectories.addAll(getResultsDirectoryByPattern(resultPattern));
+        }
+        return resultDirectories;
     }
 
-    private File[] getPathsByGlobs(File baseDir, String[] globs) {
+    public List<File> getResultsDirectoryByPattern(String resultsPattern) {
+        File absoluteDirectory = new File(resultsPattern);
+        if (absoluteDirectory.isAbsolute() && absoluteDirectory.isDirectory() &&
+                absoluteDirectory.exists() && absoluteDirectory.canRead()) {
+            return Arrays.asList(absoluteDirectory);
+        } else {
+            return Arrays.asList(getPathsByGlobs(getCurrentWorkingDirectory(), resultsPattern));
+        }
+    }
+
+    private File[] getPathsByGlobs(File baseDir, String globs) {
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(baseDir);
-        scanner.setIncludes(globs);
+        scanner.setIncludes(new String[]{globs});
         scanner.setCaseSensitive(false);
         scanner.scan();
 
         String[] relativePaths = scanner.getIncludedDirectories();
         File[] absolutePaths = new File[relativePaths.length];
         for (int i = 0; i < relativePaths.length; i++) {
-            absolutePaths[i] = (new File(baseDir, relativePaths[i]));
+            absolutePaths[i] = new File(baseDir, relativePaths[i]);
         }
         return absolutePaths;
     }
 
-    protected List<File> getInputDirectories(List<String> inputPathsOrGlobs) {
-        List<File> inputDirectories = new ArrayList<>();
-        for (String inputPathOrGlob : inputPathsOrGlobs) {
-            if (inputPathOrGlob.indexOf('~') == 0) {
-                inputPathOrGlob = inputPathOrGlob.replace("~", System.getProperty("user.home"));
-            }
-            File inputDirectory = new File(inputPathOrGlob);
-            if (inputDirectory.exists() && inputDirectory.canRead()) {
-                //Directory was specified
-                inputDirectories.add(inputDirectory);
-            } else {
-                //Trying Ant-style globs
-                String[] globs = inputPathOrGlob.split(";");
-                File[] foundInputDirectories = getPathsByGlobs(getCurrentWorkingDirectory(), globs);
-                for (File foundInputDirectory : foundInputDirectories) {
-                    if (foundInputDirectory.exists() && foundInputDirectory.canRead()) {
-                        inputDirectories.add(foundInputDirectory);
-                    }
-                }
-            }
-        }
-        return inputDirectories;
+    private File getCurrentWorkingDirectory() {
+        return new File(System.getProperty("user.dir"));
     }
+
 }
