@@ -14,6 +14,7 @@ $ sudo apt-get install allure-cli
 ```
 Supported distributions are: trusty, saucy and precise. 
 After installation you will have **allure** command available.
+Read more about [Allure Debian Package](https://github.com/allure-framework/allure-debian)
 
 #### Mac
 You can install **Allure CLI** via [Homebrew](http://brew.sh/)
