@@ -22,6 +22,7 @@ $ brew tap allure-framework/allure
 $ brew install allure-cli
 ```
 After installation you will have **allure** command available.
+Read more about [Allure Homebrew Formula](https://github.com/allure-framework/homebrew-allure)
 
 #### Windows and other Unix
  * [Download](https://github.com/allure-framework/allure-cli/releases/latest) latest version as ZIP archive
