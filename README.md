@@ -57,13 +57,13 @@ $ allure report clean
 ```
 In order to change output directory type:
 ```bash
-$ allure path/to/directory/with/xml/files -o path/to/output/directory
+$ allure generate path/to/directory/with/xml/files -o path/to/output/directory
 ```
 ### Selecting Report Version
 Starting from CLI 2.0 you can specify version of the report to be used using **-v** flag:
 ```bash
-$ allure path/to/directory/with/xml/files -v 1.3.6
-$ allure path/to/directory/with/xml/files -v 1.4.0
+$ allure generate path/to/directory/with/xml/files -v 1.3.6
+$ allure generate path/to/directory/with/xml/files -v 1.4.0
 ```
 This allows you to use the same CLI with less or more outdated adapters. Default version is **1.3.9**. All required files are downloaded from Internet automatically (this fact is important if you try to use CLI in offline environment).
 ### Getting help
