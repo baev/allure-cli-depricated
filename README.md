@@ -39,7 +39,7 @@ Defaults:
 ### Generating report
 To generate report simply run the following command:
 ```bash
-$ allure path/to/directory/with/xml/files
+$ allure generate path/to/directory/with/xml/files
 ```
 By default report is generated to directory named **allure-report**. When done simply open **index.html** page from the output directory or type:
 ```bash
@@ -48,10 +48,6 @@ $ allure report open
 In order to change output directory type:
 ```bash
 $ allure path/to/directory/with/xml/files -o path/to/output/directory
-```
-When using command line tool version older than 2.0+ you should add **generate** keyword:
-```bash
-$ allure generate path/to/directory/with/xml/files
 ```
 ### Selecting Report Version
 Starting from CLI 2.0 you can specify version of the report to be used using **-v** flag:
