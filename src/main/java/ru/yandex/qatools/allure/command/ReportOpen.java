@@ -35,6 +35,7 @@ public class ReportOpen extends ReportCommand {
         getLogger().info(String.format("Open report [%s] ", uri));
         openBrowser(uri);
 
+        getLogger().info("Press <Ctrl+C> to exit ...");
         server.join();
     }
 
