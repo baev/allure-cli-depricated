@@ -7,9 +7,9 @@ import java.net.URI;
  * eroshenkoam
  * 13/08/14
  */
-public class Browser {
+public class BrowserUtil {
 
-    public static void open(URI url) throws Exception {
+    public static void openBrowser(URI url) throws Exception {
         if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().browse(url);
         } else {
