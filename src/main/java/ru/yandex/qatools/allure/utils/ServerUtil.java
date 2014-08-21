@@ -20,7 +20,7 @@ public class ServerUtil {
 
     public static final String DEFAULT_SCHEME = "http";
 
-    public static final String DEFAULT_HOST = "0.0.0.0";
+    public static final String DEFAULT_HOST = "localhost";
 
     public static final int DEFAULT_PORT = 0;
 
