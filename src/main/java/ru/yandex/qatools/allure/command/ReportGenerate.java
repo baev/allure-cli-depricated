@@ -37,6 +37,12 @@ public class ReportGenerate extends ReportCommand {
         for (File file : inputDirectories) {
             getLogger().debug(String.format("Found results directory [%s]", file.getAbsolutePath()));
         }
+
+        if (inputDirectories.size() == 0) {
+            throw new AllureReportBuilderException(String.format("Can't find results directories by patterns %s",
+                    Arrays.toString(resultsPatterns.toArray())));
+        }
+
         AllureReportBuilder allureReportBuilder = new AllureReportBuilder(reportVersion, outputDirectory);
         allureReportBuilder.processResults(inputDirectories.toArray(new File[inputDirectories.size()]));
 
