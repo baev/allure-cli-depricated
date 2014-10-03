@@ -82,6 +82,10 @@ To show help type:
 ```bash
 $ allure help
 ```
+To show help about specific command type:
+```bash
+$ allure help generate
+```
 
 ## Contact us
 Mailing list: [allure@yandex-team.ru](mailto:allure@yandex-team.ru)
