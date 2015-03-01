@@ -7,6 +7,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import ru.yandex.qatools.allure.AllureCLI;
 import ru.yandex.qatools.allure.AllureConfig;
+import ru.yandex.qatools.allure.ExitCode;
 
 import java.text.MessageFormat;
 
@@ -16,6 +17,7 @@ import java.text.MessageFormat;
  */
 public abstract class AllureCommand implements Runnable {
 
+    private ExitCode exitCode = ExitCode.NO_ERROR;
     @Option(name = {"--debug"}, type = OptionType.GLOBAL,
             description = "Output debug information")
     protected boolean debug = false;
@@ -38,6 +40,7 @@ public abstract class AllureCommand implements Runnable {
             runUnsafe();
         } catch (Exception e) {
             getLogger().error(MessageFormat.format("Command {0} aborted due to exception", getClass().getName()), e);
+            setExitCode(ExitCode.GENERIC_ERROR);
         }
     }
 
@@ -50,5 +53,14 @@ public abstract class AllureCommand implements Runnable {
     private void setUpLogLevel(Level level) {
         LogManager.getRootLogger().setLevel(level);
     }
-
+    
+    protected void setExitCode(ExitCode exitCode)
+    {
+        this.exitCode = exitCode;
+    }
+    
+    public ExitCode getExitCode()
+    {
+        return exitCode;
+    }
 }

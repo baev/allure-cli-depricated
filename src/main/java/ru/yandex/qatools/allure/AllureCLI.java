@@ -29,9 +29,18 @@ public class AllureCLI {
 
             Cli<Runnable> allureParser = builder.build();
 
-            allureParser.parse(args).run();
+            
+            Runnable command = allureParser.parse(args);
+            command.run();
+            if (command instanceof AllureCommand) {
+                AllureCommand allureCommand = (AllureCommand) command;
+                System.exit(allureCommand.getExitCode().getCode());
+            } else {
+                System.exit(ExitCode.NO_ERROR.getCode());
+            }
         } catch (ParseException e) {
             System.out.println(e.getMessage());
+            System.exit(ExitCode.ARGUMENT_PARSING_ERROR.getCode());
         }
     }
 }
