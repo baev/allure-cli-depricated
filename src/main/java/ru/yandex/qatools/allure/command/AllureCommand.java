@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 import ru.yandex.qatools.allure.AllureCLI;
 import ru.yandex.qatools.allure.AllureConfig;
 
+import java.text.MessageFormat;
+
 /**
  * eroshenkoam
  * 11/08/14
@@ -35,8 +37,7 @@ public abstract class AllureCommand implements Runnable {
         try {
             runUnsafe();
         } catch (Exception e) {
-            getLogger().info(e.getMessage());
-            getLogger().debug(e);
+            getLogger().error(MessageFormat.format("Command {0} aborted due to exception", getClass().getName()), e);
         }
     }
 
