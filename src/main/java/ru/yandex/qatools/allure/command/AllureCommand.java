@@ -1,66 +1,15 @@
 package ru.yandex.qatools.allure.command;
 
-import io.airlift.command.Option;
-import io.airlift.command.OptionType;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import ru.yandex.qatools.allure.AllureCLI;
-import ru.yandex.qatools.allure.AllureConfig;
 import ru.yandex.qatools.allure.ExitCode;
 
-import java.text.MessageFormat;
-
 /**
- * eroshenkoam
- * 11/08/14
+ * @author Dmitry Baev charlie@yandex-team.ru
+ *         Date: 10.08.15
  */
-public abstract class AllureCommand implements Runnable {
+public interface AllureCommand extends Runnable {
 
-    private ExitCode exitCode = ExitCode.NO_ERROR;
-    @Option(name = {"--debug"}, type = OptionType.GLOBAL,
-            description = "Output debug information")
-    protected boolean debug = false;
-
-    private static final AllureConfig config = new AllureConfig();
-
-    private static final Logger logger = LogManager.getLogger(AllureCLI.class);
-
-    public static AllureConfig getConfig() {
-        return config;
-    }
-
-    public static Logger getLogger() {
-        return logger;
-    }
-
-    public void run() {
-        setUpLogLevel(isDebug() ? Level.DEBUG : Level.INFO);
-        try {
-            runUnsafe();
-        } catch (Exception e) {
-            getLogger().error(MessageFormat.format("Command {0} aborted due to exception", getClass().getName()), e);
-            setExitCode(ExitCode.GENERIC_ERROR);
-        }
-    }
-
-    public abstract void runUnsafe() throws Exception;
-
-    public boolean isDebug() {
-        return debug;
-    }
-
-    private void setUpLogLevel(Level level) {
-        LogManager.getRootLogger().setLevel(level);
-    }
-    
-    protected void setExitCode(ExitCode exitCode)
-    {
-        this.exitCode = exitCode;
-    }
-    
-    public ExitCode getExitCode()
-    {
-        return exitCode;
-    }
+    /**
+     * Returns the exit code for command. Should not be null.
+     */
+    ExitCode getExitCode();
 }

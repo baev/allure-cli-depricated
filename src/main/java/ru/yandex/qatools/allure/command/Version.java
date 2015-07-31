@@ -1,28 +1,26 @@
 package ru.yandex.qatools.allure.command;
 
 import io.airlift.command.Command;
+import ru.yandex.qatools.allure.logging.Messages;
 
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.jar.Manifest;
 
 /**
- * eroshenkoam
- * 11/08/14
+ * Print the information about Allure command line tool.
+ *
+ * @author eroshenkoam@yandex-team.ru
  */
 @Command(name = "version", description = "Display version information")
-public class Version extends AllureCommand {
+public class Version extends AbstractCommand {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void runUnsafe() throws IOException {
-        URL url = ((URLClassLoader) getClass().getClassLoader()).findResource("META-INF/MANIFEST.MF");
-        Manifest manifest = new Manifest(url.openStream());
-        String specificationVersion = manifest.getMainAttributes().getValue("Specification-Version");
-        if (specificationVersion != null) {
-            getLogger().info(specificationVersion);
-        } else {
-            getLogger().error("Failed to load version from MANIFEST.MF. This is probably a bug.");
-        }
+    protected void runUnsafe() throws IOException {
+        String toolVersion = getClass().getPackage().getImplementationVersion();
+        String bundleVersion = getConfig().getCurrentVersion();
+        getLogger().info(Messages.COMMAND_VERSION_INFO, toolVersion, bundleVersion);
     }
+
 }

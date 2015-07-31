@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:alr="urn:repository.allure.qatools.yandex.ru"
+           targetNamespace="urn:repository.allure.qatools.yandex.ru">
+
+    <xs:complexType name="Metadata">
+        <xs:all>
+            <xs:element name="groupId" type="xs:string"/>
+            <xs:element name="artifactId" type="xs:string"/>
+            <xs:element name="versioning" type="alr:Versioning"/>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="Versioning">
+        <xs:all>
+            <xs:element name="latest" type="xs:string"/>
+            <xs:element name="release" type="xs:string"/>
+            <xs:element name="versions" type="alr:Versions"/>
+            <xs:element name="lastUpdated" type="xs:string"/>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="Versions">
+        <xs:sequence>
+            <xs:element name="version" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

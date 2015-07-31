@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:itn="http://jaxb2-commons.dev.java.net/basic/inheritance"
+               jaxb:version="2.1" schemaLocation="config.xsd">
+
+    <jaxb:bindings node="//*[@name='Config']">
+        <itn:extends>ru.yandex.qatools.allure.config.ConfigSupport</itn:extends>
+    </jaxb:bindings>
+
+</jaxb:bindings>

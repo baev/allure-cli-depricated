@@ -1,43 +1,59 @@
 package ru.yandex.qatools.allure.command;
 
 import io.airlift.command.Command;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import ru.yandex.qatools.allure.logging.Messages;
 
-import java.io.File;
-import java.net.URI;
-
-import static ru.yandex.qatools.allure.utils.ServerUtil.getServerURI;
-import static ru.yandex.qatools.allure.utils.ServerUtil.setUpServerForReportDirectory;
-import static ru.yandex.qatools.allure.utils.BrowserUtil.openBrowser;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
- * eroshenkoam
- * 13/08/14
+ * @author eroshenkoam@yandex-team.ru
  */
 @Command(name = "open", description = "Open generated report")
 public class ReportOpen extends ReportCommand {
 
     @Override
-    public void runUnsafe() throws Exception {
-        File reportDirectory = getReportDirectory();
-        if (!reportDirectory.exists()) {
-            getLogger().error(String.format("Can't open report: directory [%s] doesn't exist",
-                    reportDirectory.getAbsolutePath()));
+    protected void runUnsafe() throws IOException, AllureCommandException {
+        Path reportDirectory = getReportDirectory();
+
+        if (Files.notExists(reportDirectory)) {
+            getLogger().error(Messages.COMMAND_REPORT_OPEN_REPORT_MISSING, reportDirectory);
             return;
         }
 
-        getLogger().info(String.format("Starting web server for report directory [%s] ",
-                reportDirectory.getAbsolutePath()));
-        Server server = setUpServerForReportDirectory(reportDirectory);
-        server.start();
+        getLogger().info(Messages.COMMAND_REPORT_OPEN_SERVER_STARTING, reportDirectory);
 
-        URI uri = getServerURI(server);
-        getLogger().info(String.format("Open report [%s] ", uri));
-        openBrowser(uri);
+        try {
+            Server server = setUpServer();
+            server.setStopAtShutdown(true);
+            server.start();
 
-        getLogger().info("Press <Ctrl+C> to exit ...");
-        server.join();
+            openBrowser(server.getURI());
+            getLogger().info(Messages.COMMAND_REPORT_OPEN_SERVER_STARTED, server.getURI());
+            server.join();
+        } catch (Exception e) {
+            throw new AllureCommandException(e);
+        }
     }
 
-
+    /**
+     * Set up server for report directory.
+     */
+    protected Server setUpServer() {
+        Server server = new Server(0);
+        ResourceHandler handler = new ResourceHandler();
+        handler.setDirectoriesListed(true);
+        handler.setWelcomeFiles(new String[]{"index.html"});
+        handler.setResourceBase(getReportDirectory().toString());
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[]{handler, new DefaultHandler()});
+        server.setHandler(handlers);
+        return server;
+    }
 }

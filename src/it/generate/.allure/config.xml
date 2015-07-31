@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<config>
+    <reportPath>allure-report</reportPath>
+    <currentVersion>1.4.16</currentVersion>
+    <previousVersion>1.4.16</previousVersion>
+    <installedVersions>
+        <version>1.4.16</version>
+    </installedVersions>
+</config>
