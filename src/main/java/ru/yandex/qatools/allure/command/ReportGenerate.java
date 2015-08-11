@@ -2,90 +2,91 @@ package ru.yandex.qatools.allure.command;
 
 import io.airlift.command.Arguments;
 import io.airlift.command.Command;
-import io.airlift.command.Option;
-import org.codehaus.plexus.util.DirectoryScanner;
-import ru.yandex.qatools.allure.report.AllureReportBuilder;
-import ru.yandex.qatools.allure.report.AllureReportBuilderException;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import ru.yandex.qatools.allure.logging.Messages;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
 /**
- * eroshenkoam
- * 11/08/14
+ * @author eroshenkoam@yandex-team.ru
  */
-@Command(name = "generate", description = "Generate Allure report")
+@Command(name = "generate", description = "Generate the Allure report from given test results.")
 public class ReportGenerate extends ReportCommand {
 
-    @Arguments(title = "Results patterns", required = true,
+    public static final String JAVA_HOME = "JAVA_HOME";
+
+    public static final String JAR = "-jar";
+
+    @Arguments(title = "Results directories", required = true,
             description = "A list of input directories or globs to be processed")
-    public List<String> resultsPatterns;
+    public List<String> resultsDirectories = new ArrayList<>();
 
-    @Option(name = {"-v", "--report-version"}, required = false,
-            description = "Report version specification in Maven format")
-    public String reportVersion = getConfig().getReportVersion();
+    /**
+     * {@inheritDoc}
+     */
+    protected void runUnsafe() throws IOException, AllureCommandException {
+        String version = getConfig().getCurrentVersion();
 
-    public void runUnsafe() throws AllureReportBuilderException {
-        File outputDirectory = new File(reportPath);
-        if (!outputDirectory.exists() && !outputDirectory.mkdirs()) {
-            throw new RuntimeException("Can't create output directory " + reportPath);
-        }
-        getLogger().debug(String.format("Generating report for Allure version [%s]", reportVersion));
-        List<File> inputDirectories = getResultsDirectories(resultsPatterns);
-        for (File file : inputDirectories) {
-            getLogger().debug(String.format("Found results directory [%s]", file.getAbsolutePath()));
+        if (isEmpty(version)) {
+            getLogger().warn(Messages.COMMAND_REPORT_GENERATE_CURRENT_VERSION_MISSING);
+            return;
         }
 
-        if (inputDirectories.size() == 0) {
-            throw new AllureReportBuilderException(String.format("Can't find results directories by patterns %s",
-                    Arrays.toString(resultsPatterns.toArray())));
+        if (resultsDirectories.isEmpty()) {
+            getLogger().error(Messages.COMMAND_REPORT_GENERATE_RESULTS_MISSING);
+            return;
         }
 
-        AllureReportBuilder allureReportBuilder = new AllureReportBuilder(reportVersion, outputDirectory);
-        allureReportBuilder.processResults(inputDirectories.toArray(new File[inputDirectories.size()]));
+        new DefaultExecutor().execute(createCommandLine());
 
-        allureReportBuilder.unpackFace();
-        getLogger().info(String.format("Successfully generated report to [%s].", outputDirectory.getAbsolutePath()));
+        getLogger().info(Messages.COMMAND_REPORT_GENERATE_REPORT_GENERATED, getReportDirectoryPath());
     }
 
-    protected List<File> getResultsDirectories(List<String> resultPatterns) {
-        List<File> resultDirectories = new ArrayList<>();
-        for (String resultPattern : resultPatterns) {
-            getLogger().debug(String.format("Processing result pattern [%s]", resultPattern));
-            resultDirectories.addAll(getResultsDirectoryByPattern(resultPattern));
+    /**
+     * Create a {@link CommandLine} to run bundle with needed arguments.
+     *
+     * @throws AllureCommandException if any occurs.
+     * @see #getJavaExecutable()
+     */
+    protected CommandLine createCommandLine() throws AllureCommandException {
+        String version = getConfig().getCurrentVersion();
+
+        List<String> arguments = new ArrayList<>();
+        arguments.add(getLoggerConfigurationArgument());
+        arguments.add(JAR);
+        arguments.add(getExecutablePath(version).toString());
+        arguments.addAll(resultsDirectories);
+        arguments.add(getReportDirectoryPath());
+
+        return new CommandLine(getJavaExecutable())
+                .addArguments(arguments.toArray(new String[arguments.size()]));
+    }
+
+    /**
+     * Returns the path to java executable.
+     *
+     * @return the path to java executable.
+     * @throws AllureCommandException if JAVA_HOME environment variable is not set.
+     */
+    protected String getJavaExecutable() throws AllureCommandException {
+        String javaHome = System.getenv(JAVA_HOME);
+        if (javaHome == null) {
+            throw new AllureCommandException("Could not find java executable: JAVA_HOME is not set");
         }
-        return resultDirectories;
+
+        return String.format("%s/bin/java", javaHome);
     }
 
-    public List<File> getResultsDirectoryByPattern(String resultsPattern) {
-        File absoluteDirectory = new File(resultsPattern);
-        if (absoluteDirectory.isAbsolute() && absoluteDirectory.isDirectory() &&
-                absoluteDirectory.exists() && absoluteDirectory.canRead()) {
-            return Arrays.asList(absoluteDirectory);
-        } else {
-            return Arrays.asList(getPathsByGlobs(getCurrentWorkingDirectory(), resultsPattern));
-        }
+    /**
+     * Get argument to configure log level for bundle.
+     */
+    protected String getLoggerConfigurationArgument() {
+        return String.format("-Dorg.slf4j.simpleLogger.defaultLogLevel=%s",
+                isQuiet() || !isVerbose() ? "error" : "debug");
     }
-
-    private File[] getPathsByGlobs(File baseDir, String globs) {
-        DirectoryScanner scanner = new DirectoryScanner();
-        scanner.setBasedir(baseDir);
-        scanner.setIncludes(new String[]{globs});
-        scanner.setCaseSensitive(false);
-        scanner.scan();
-
-        String[] relativePaths = scanner.getIncludedDirectories();
-        File[] absolutePaths = new File[relativePaths.length];
-        for (int i = 0; i < relativePaths.length; i++) {
-            absolutePaths[i] = new File(baseDir, relativePaths[i]);
-        }
-        return absolutePaths;
-    }
-
-    private File getCurrentWorkingDirectory() {
-        return new File(System.getProperty("user.dir"));
-    }
-
 }

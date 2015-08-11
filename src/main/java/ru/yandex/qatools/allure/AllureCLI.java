@@ -1,7 +1,18 @@
 package ru.yandex.qatools.allure;
 
-import io.airlift.command.*;
-import ru.yandex.qatools.allure.command.*;
+import io.airlift.command.Cli;
+import io.airlift.command.ParseException;
+import ru.yandex.qatools.allure.command.AllureCommand;
+import ru.yandex.qatools.allure.command.BundleList;
+import ru.yandex.qatools.allure.command.BundleRemove;
+import ru.yandex.qatools.allure.command.BundleSwitch;
+import ru.yandex.qatools.allure.command.BundleUpgrade;
+import ru.yandex.qatools.allure.command.Demo;
+import ru.yandex.qatools.allure.command.AllureHelp;
+import ru.yandex.qatools.allure.command.ReportClean;
+import ru.yandex.qatools.allure.command.ReportGenerate;
+import ru.yandex.qatools.allure.command.ReportOpen;
+import ru.yandex.qatools.allure.command.Version;
 
 /**
  * @author Dmitry Baev charlie@yandex-team.ru
@@ -11,12 +22,15 @@ public class AllureCLI {
 
     public static void main(String[] args) {
         try {
-            Cli.CliBuilder<Runnable> builder = Cli.<Runnable>builder("allure")
+            Cli.CliBuilder<AllureCommand> builder = Cli.<AllureCommand>builder("allure")
                     .withDescription("Allure command line tool")
-                    .withDefaultCommand(Help.class)
-                    .withCommand(Help.class)
-                    .withCommand(Demo.class)
+                    .withDefaultCommand(AllureHelp.class)
+                    .withCommand(AllureHelp.class)
+                    .withCommand(BundleList.class)
+                    .withCommand(BundleSwitch.class)
+                    .withCommand(BundleUpgrade.class)
                     .withCommand(Version.class)
+                    .withCommand(Demo.class)
                     .withCommand(ReportGenerate.class);
 
             builder.withGroup("report")
@@ -26,18 +40,20 @@ public class AllureCLI {
                     .withCommand(ReportClean.class)
                     .withCommand(ReportGenerate.class);
 
+            builder.withGroup("bundle")
+                    .withDescription("Bundle commands")
+                    .withDefaultCommand(BundleList.class)
+                    .withCommand(BundleList.class)
+                    .withCommand(BundleSwitch.class)
+                    .withCommand(BundleRemove.class)
+                    .withCommand(BundleUpgrade.class);
 
-            Cli<Runnable> allureParser = builder.build();
+            Cli<AllureCommand> allureParser = builder.build();
 
-            
-            Runnable command = allureParser.parse(args);
+            AllureCommand command = allureParser.parse(args);
+
             command.run();
-            if (command instanceof AllureCommand) {
-                AllureCommand allureCommand = (AllureCommand) command;
-                System.exit(allureCommand.getExitCode().getCode());
-            } else {
-                System.exit(ExitCode.NO_ERROR.getCode());
-            }
+            System.exit(command.getExitCode().getCode());
         } catch (ParseException e) {
             System.out.println(e.getMessage());
             System.exit(ExitCode.ARGUMENT_PARSING_ERROR.getCode());

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ns="urn:config.allure.qatools.yandex.ru"
+           targetNamespace="urn:config.allure.qatools.yandex.ru">
+
+    <xs:element name="config" type="ns:Config"/>
+
+    <xs:complexType name="Config">
+        <xs:all>
+            <xs:element name="reportPath" type="xs:string" default="allure-report"/>
+            <xs:element name="latestVersion" type="xs:string"/>
+            <xs:element name="currentVersion" type="xs:string"/>
+            <xs:element name="previousVersion" type="xs:string"/>
+            <xs:element name="installedVersions" type="ns:Versions"/>
+        </xs:all>
+        <xs:attribute name="locale" type="xs:string" default="en"/>
+    </xs:complexType>
+
+    <xs:complexType name="Versions">
+        <xs:sequence>
+            <xs:element name="version" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
