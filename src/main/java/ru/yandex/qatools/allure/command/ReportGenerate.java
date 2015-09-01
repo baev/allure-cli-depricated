@@ -7,6 +7,7 @@ import org.apache.commons.exec.DefaultExecutor;
 import ru.yandex.qatools.allure.logging.Messages;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class ReportGenerate extends ReportCommand {
 
     public static final String JAVA_HOME = "JAVA_HOME";
 
-    public static final String JAR = "-jar";
+    public static final String CLASS_PATH = "-cp";
 
     @Arguments(title = "Results directories", required = true,
             description = "A list of input directories or globs to be processed")
@@ -54,12 +55,11 @@ public class ReportGenerate extends ReportCommand {
      * @see #getJavaExecutable()
      */
     protected CommandLine createCommandLine() throws AllureCommandException {
-        String version = getConfig().getCurrentVersion();
-
         List<String> arguments = new ArrayList<>();
         arguments.add(getLoggerConfigurationArgument());
-        arguments.add(JAR);
-        arguments.add(getExecutablePath(version).toString());
+        arguments.add(CLASS_PATH);
+        arguments.add(getClassPathArgument());
+        arguments.add(getMainClassArgument());
         arguments.addAll(resultsDirectories);
         arguments.add(getReportDirectoryPath());
 
@@ -88,5 +88,22 @@ public class ReportGenerate extends ReportCommand {
     protected String getLoggerConfigurationArgument() {
         return String.format("-Dorg.slf4j.simpleLogger.defaultLogLevel=%s",
                 isQuiet() || !isVerbose() ? "error" : "debug");
+    }
+
+    private String getClassPathArgument() {
+        String version = getConfig().getCurrentVersion();
+        String separator = System.getProperty("path.separator");
+        Path configPath = getConfigPath().getParent().toAbsolutePath();
+        Path bundleJarPath = getExecutablePath(version);
+        String pluginsPath = getPluginsPath().toAbsolutePath() + "/*";
+        return configPath + separator + bundleJarPath + separator + pluginsPath;
+    }
+
+    private Path getPluginsPath() {
+        return getHomeDirectory().resolve("plugins");
+    }
+
+    private String getMainClassArgument() {
+        return "ru.yandex.qatools.allure.AllureMain";
     }
 }
